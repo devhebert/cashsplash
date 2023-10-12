@@ -1,30 +1,32 @@
 package com.example.cashsplash.models;
 
 import com.example.cashsplash.enums.UserType;
-import com.example.cashsplash.services.user.UserRequestDTO;
 import jakarta.persistence.*;
-import lombok.*;
 
-@Entity
+import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Table(name = "users")
-@Data
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Getter
+@Setter
+@ToString
+@Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private UUID uuid;
     private String name;
     private String email;
     private String password;
     private UserType userType;
-
-    public User(UserRequestDTO data) {
-        this.name = data.name();
-        this.email = data.email();
-        this.password = data.password();
-        this.userType = data.userType();
-    }
 }
+
+
+

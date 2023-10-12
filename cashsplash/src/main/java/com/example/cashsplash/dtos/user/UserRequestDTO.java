@@ -1,4 +1,4 @@
-package com.example.cashsplash.dtos;
+package com.example.cashsplash.dtos.user;
 
 import com.example.cashsplash.enums.UserType;
 import lombok.Getter;

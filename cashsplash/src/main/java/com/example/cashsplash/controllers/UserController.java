@@ -1,61 +1,68 @@
 package com.example.cashsplash.controllers;
 
+import com.example.cashsplash.converters.UserConverter;
+import com.example.cashsplash.models.User;
 import com.example.cashsplash.repositories.UserRepository;
-import com.example.cashsplash.services.user.UserRequestDTO;
-import com.example.cashsplash.services.user.UserResponseDTO;
+import com.example.cashsplash.dtos.user.UserRequestDTO;
 import com.example.cashsplash.services.user.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("users")
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserConverter userConverter;
+    private final UserService userService;
 
-    @Autowired
-    private UserService userService;
+    public UserController(UserRepository userRepository, UserConverter userConverter, UserService userService) {
+        this.userRepository = userRepository;
+        this.userConverter = userConverter;
+        this.userService = userService;
+    }
+
+    @GetMapping //GET "http://localhost:8080/users/"
+    public List<User> getAllUsers() {
+        return this.userRepository.findAll();
+    }
 
     @PostMapping  //POST "http://localhost:8080/users/"
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createUser(@RequestBody @Valid UserRequestDTO data) {
-        boolean create = userService.createUser(data);
-        if (!create) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuário já cadastrado.");
+        User userEntity = this.userConverter.requestDTOToEntity(data);
+        boolean created = this.userService.saveUser(userEntity);
+        if (!created) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro ao cadastrar usuário.");
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso!");
     }
 
-    @GetMapping //GET "http://localhost:8080/users/"
-    public List<UserResponseDTO> getAllUsers() {
-        return userRepository.findAll().stream().map(UserResponseDTO::new).toList();
-    }
-
-    @PutMapping("/{id}") //PUT "http://localhost:8080/users/1"
+    @PutMapping("/{uuid}") //PUT "http://localhost:8080/users/6a669eb6-fc41-49f0-b61b-9240ef34205f"
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> updateUser(@PathVariable String id, @RequestBody @Valid UserRequestDTO data) {
-        boolean updated = userService.updateUser(id, data);
+    public ResponseEntity<String> updateUser(@PathVariable UUID uuid, @RequestBody @Valid UserRequestDTO data) {
+        User userEntity = this.userConverter.requestDTOToEntity(data);
+        boolean updated = userService.updateUser(uuid, userEntity);
         if (!updated) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro ao atualizar usuário.");
         }
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário atualizado com sucesso!");
     }
 
-    @DeleteMapping("/{id}") //DELETE "http://localhost:8080/users/1"
+    @DeleteMapping("/{uuid}") //DELETE "http://localhost:8080/users/6a669eb6-fc41-49f0-b61b-9240ef34205f"
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteCustomer(@PathVariable String id) {
-        boolean deleted = userService.deleteUser(id);
+    public ResponseEntity<String> deleteUser(@PathVariable UUID uuid) {
+        boolean deleted = userService.deleteUser(uuid);
         if (!deleted) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro ao excluir usuário.");
         }
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário excluído com sucesso!");
     }
 }
