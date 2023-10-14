@@ -5,14 +5,13 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-@Entity
-@Table(name = "campanha")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = {"id"})
+@Entity
+@Table(name = "campanha")
 public class Campanha {
 
     @Id
