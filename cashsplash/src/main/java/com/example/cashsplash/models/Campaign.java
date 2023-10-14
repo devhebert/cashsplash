@@ -12,19 +12,14 @@ import java.util.UUID;
 @ToString
 @Entity
 @Table(name = "campanha")
-public class Campanha {
+public class Campaign {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column
     private UUID uuid;
-    @Column
-    private String nome;
-    @Column
-    private String descricao;
-    @Column
-    private BigDecimal valor;
+    private String name;
+    private String description;
+    private BigDecimal offValue;
 
 }

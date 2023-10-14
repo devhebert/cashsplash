@@ -1,6 +1,6 @@
 package com.example.cashsplash.dtos.venda;
 
-import com.example.cashsplash.models.Campanha;
+import com.example.cashsplash.models.Campaign;
 import com.example.cashsplash.models.Cliente;
 import com.example.cashsplash.models.Produto;
 import com.example.cashsplash.models.User;
@@ -15,5 +15,5 @@ public class VendaRequestDto {
     private User idUsuario;
     private Cliente idCliente;
     private Produto idProduto;
-    private Campanha idCampanha;
+    private Campaign idCampaign;
 }

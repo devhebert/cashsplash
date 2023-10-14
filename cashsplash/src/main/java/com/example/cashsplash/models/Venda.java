@@ -32,6 +32,6 @@ public class Venda {
         private Produto idProduto;
 
         @ManyToOne
-        @JoinColumn(name = "id_campanha")
-        private Campanha idCampanha;
+        @JoinColumn(name = "id_campaign")
+        private Campaign idCampaign;
 }

@@ -2,8 +2,7 @@ package com.example.cashsplash.controllers;
 
 import com.example.cashsplash.converters.CampaignConverter;
 import com.example.cashsplash.dtos.campanha.CampaignRequestDTO;
-import com.example.cashsplash.services.campaign.CampaignService;
-import com.example.cashsplash.models.Campanha;
+import com.example.cashsplash.models.Campaign;
 
 import com.example.cashsplash.repositories.CampaignRepository;
 import jakarta.validation.Valid;
@@ -14,7 +13,6 @@ import org.modelmapper.ModelMapper;
 
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -24,62 +22,60 @@ public class CampaignController {
     private final CampaignRepository repository;
     private final CampaignConverter campaignConverter;
     private final ModelMapper modelMapper;
-    private final CampaignService campaignService;
 
-    public CampaignController(CampaignRepository repository, CampaignConverter campaignRepo, ModelMapper modelMapper, CampaignService campaignService) {
+    public CampaignController(CampaignRepository repository, CampaignConverter campaignRepo, ModelMapper modelMapper) {
         this.repository = repository;
         this.campaignConverter = campaignRepo;
         this.modelMapper = modelMapper;
-        this. campaignService = campaignService;
     }
 
-    private CampaignResponseDTO convertResponse(Campanha campanha) {
-        return this.modelMapper.map(campanha, CampaignResponseDTO.class);
+    private CampaignResponseDTO convertResponse(Campaign campaign) {
+        return this.modelMapper.map(campaign, CampaignResponseDTO.class);
     }
     @GetMapping("/listar-todos")
-    public List<Campanha> listarTodas(){
+    public List<Campaign> listarTodas(){
         return this.repository.findAll();
     }
 
     @GetMapping("/{uuid}")
     public CampaignResponseDTO getPorId(@PathVariable UUID uuid){
-        Campanha campanha = this.repository.findByUuid(uuid).orElseThrow();
-        return this.campaignConverter.entityToResponseDTO(campanha);
+        Campaign campaign = this.repository.findByUuid(uuid).orElseThrow();
+        return this.campaignConverter.entityToResponseDTO(campaign);
     }
 
     @GetMapping(params = {"nome"})
     public List<CampaignResponseDTO> buscarPorNome(@RequestParam String nome){
-        return this.repository.findByNomeContainingIgnoreCase(nome).stream()
+        return this.repository.findByNameContainingIgnoreCase(nome).stream()
                 .map(this::convertResponse).toList();
     }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CampaignResponseDTO createCampaign(@RequestBody CampaignRequestDTO request) {
-        Campanha campanha = this.campaignConverter.requestDTOToEntity(request);
-        Campanha novaCampanha = this.repository.save(campanha);
+        Campaign campaign = this.campaignConverter.requestDTOToEntity(request);
+        campaign.setUuid(UUID.randomUUID());
+        Campaign novaCampaign = this.repository.save(campaign);
 
-        return this.campaignConverter.entityToResponseDTO(novaCampanha);
+        return this.campaignConverter.entityToResponseDTO(novaCampaign);
 
     }
 
     @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public CampaignResponseDTO replaceCampaign(@PathVariable UUID uuid, @RequestBody @Valid CampaignRequestDTO request) {
-        Campanha campanha = this.repository.findByUuid(uuid).orElseThrow();
-        campanha.setNome(request.getNome());
-        campanha.setDescricao(request.getDescricao());
-        campanha.setValor(request.getValor());
-        Campanha replacedCampaign = this.repository.save(campanha);
+        Campaign campaign = this.repository.findByUuid(uuid).orElseThrow();
+        campaign.setName(request.getName());
+        campaign.setDescription(request.getDescription());
+        campaign.setOffValue(request.getOffValue());
+        Campaign replacedCampaign = this.repository.save(campaign);
         return this.campaignConverter.entityToResponseDTO(replacedCampaign);
     }
 
     @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCampaign(@PathVariable UUID uuid) {
-        Campanha campanha = this.repository.findByUuid(uuid).orElseThrow();
-        this.repository.delete(campanha);
+        Campaign campaign = this.repository.findByUuid(uuid).orElseThrow();
+        this.repository.delete(campaign);
     }
 
 

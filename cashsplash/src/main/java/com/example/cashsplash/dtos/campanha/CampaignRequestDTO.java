@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 public class CampaignRequestDTO {
-    String nome;
-    String descricao;
-    BigDecimal valor;
+    String name;
+    String description;
+    BigDecimal offValue;
 }
