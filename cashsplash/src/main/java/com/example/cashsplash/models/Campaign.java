@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @Entity
-@Table(name = "campanha")
+@Table(name = "campaign")
 public class Campaign {
 
     @Id

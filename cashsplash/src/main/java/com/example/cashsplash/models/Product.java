@@ -3,17 +3,19 @@ package com.example.cashsplash.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cliente")
+@Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode(of = {"id"})
-public class Cliente {
+public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,11 +23,12 @@ public class Cliente {
     @Column
     private UUID uuid;
     @Column
-    private String nome;
+    private String name;
     @Column
-    private String email;
+    private String description;
     @Column
-    private String telefone;
-    @Column(name = "endereco")
-    private Address endereco;
+    private BigDecimal value;
+    @Column
+    private Long amount;
+
 }

@@ -5,14 +5,14 @@ import lombok.*;
 
 import java.util.UUID;
 @Entity
-@Table(name = "venda")
+@Table(name = "sale")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode(of = {"id"})
-public class Venda {
+public class Sale {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
@@ -20,16 +20,16 @@ public class Venda {
         @Column
         private UUID uuid;
         @ManyToOne
-        @JoinColumn(name = "id_usuario")
-        private User idUsuario;
+        @JoinColumn(name = "id_user")
+        private User idUser;
 
         @ManyToOne
-        @JoinColumn(name = "id_cliente")
-        private Cliente idCliente;
+        @JoinColumn(name = "id_customer")
+        private Customer customer;
 
         @ManyToOne
-        @JoinColumn(name = "id_produto")
-        private Produto idProduto;
+        @JoinColumn(name = "id_product")
+        private Product idProduct;
 
         @ManyToOne
         @JoinColumn(name = "id_campaign")
