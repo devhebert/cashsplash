@@ -30,5 +30,4 @@ public class Product {
     private BigDecimal value;
     @Column
     private Long amount;
-
 }
