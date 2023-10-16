@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class SaleRequestDto {
     private User idUsuario;
-    private Customer customer;
+    private Customer idCustomer;
     private Product idProduct;
     private Campaign idCampaign;
 }
