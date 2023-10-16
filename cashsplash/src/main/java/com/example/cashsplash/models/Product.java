@@ -6,8 +6,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Entity
 @Table(name = "product")
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -29,6 +29,6 @@ public class Product {
     @Column
     private BigDecimal value;
     @Column
-    private Long amount;
+    private Integer amount;
 
 }
