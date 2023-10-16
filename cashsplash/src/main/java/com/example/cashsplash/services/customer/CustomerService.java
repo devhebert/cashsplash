@@ -1,9 +1,9 @@
 package com.example.cashsplash.services.customer;
 
+import com.example.cashsplash.feign.FeignZipCode;
 import com.example.cashsplash.models.Address;
 import com.example.cashsplash.models.Customer;
 import com.example.cashsplash.repositories.CustomerRepository;
-import com.example.cashsplash.services.viacep.CepService;
 import com.example.cashsplash.dtos.viacep.ViaCepResponseDTO;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +13,11 @@ import java.util.UUID;
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
-    private final CepService cepService;
+    private final FeignZipCode feignZipCode;
 
-    public CustomerService(CustomerRepository customerRepository, CepService cepService) {
+    public CustomerService(CustomerRepository customerRepository, FeignZipCode feignZipCode) {
         this.customerRepository = customerRepository;
-        this.cepService = cepService;
+        this.feignZipCode = feignZipCode;
     }
 
     public boolean saveCustomer(Customer data) {
@@ -28,7 +28,7 @@ public class CustomerService {
 
         try {
             if (data.getAddress() != null && data.getAddress().getCep() != null) {
-                ViaCepResponseDTO response = cepService.fetchCep(data.getAddress().getCep());
+                ViaCepResponseDTO response = feignZipCode.fetchCep(data.getAddress().getCep());
                 data.getAddress().setLogradouro(response.logradouro());
                 data.getAddress().setComplemento(response.complemento());
                 data.getAddress().setBairro(response.bairro());
