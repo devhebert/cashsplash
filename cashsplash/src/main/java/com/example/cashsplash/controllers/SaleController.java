@@ -1,8 +1,8 @@
 package com.example.cashsplash.controllers;
 
 import com.example.cashsplash.converters.SaleConverter;
-import com.example.cashsplash.dtos.venda.SaleRequestDto;
-import com.example.cashsplash.dtos.venda.SaleResponseDto;
+import com.example.cashsplash.dtos.sale.SaleRequestDto;
+import com.example.cashsplash.dtos.sale.SaleResponseDto;
 import com.example.cashsplash.models.Sale;
 import com.example.cashsplash.repositories.SaleRepository;
 import com.example.cashsplash.services.sale.SaleService;

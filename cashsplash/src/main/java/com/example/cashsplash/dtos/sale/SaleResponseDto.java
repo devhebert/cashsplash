@@ -1,4 +1,4 @@
-package com.example.cashsplash.dtos.venda;
+package com.example.cashsplash.dtos.sale;
 
 import com.example.cashsplash.models.*;
 

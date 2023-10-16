@@ -2,8 +2,8 @@ package com.example.cashsplash.converters;
 
 import com.example.cashsplash.common.Converter;
 
-import com.example.cashsplash.dtos.venda.SaleRequestDto;
-import com.example.cashsplash.dtos.venda.SaleResponseDto;
+import com.example.cashsplash.dtos.sale.SaleRequestDto;
+import com.example.cashsplash.dtos.sale.SaleResponseDto;
 import com.example.cashsplash.models.Sale;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
