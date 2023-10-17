@@ -1,6 +1,8 @@
 package com.example.cashsplash.repositories;
 
 import com.example.cashsplash.models.Sale;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +12,5 @@ import java.util.UUID;
 @Repository
 public interface SaleRepository extends JpaRepository<Sale, Long> {
     Optional<Sale> findByUuid(UUID uuid);
+    Page<Sale> findByUuid(Pageable pageable, UUID uuid);
 }

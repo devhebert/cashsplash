@@ -1,5 +1,7 @@
 package com.example.cashsplash.dtos.product;
 
+
+import com.example.cashsplash.models.Product;
 import com.example.cashsplash.models.Product;
 
 import java.math.BigDecimal;

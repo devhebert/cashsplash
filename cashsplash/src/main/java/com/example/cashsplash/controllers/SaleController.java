@@ -1,10 +1,7 @@
 package com.example.cashsplash.controllers;
 
-import com.example.cashsplash.converters.SaleConverter;
 import com.example.cashsplash.dtos.sale.SaleRequestDto;
 import com.example.cashsplash.dtos.sale.SaleResponseDto;
-import com.example.cashsplash.models.Sale;
-import com.example.cashsplash.repositories.SaleRepository;
 import com.example.cashsplash.services.sale.SaleService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -18,32 +15,30 @@ import java.util.UUID;
 @RequestMapping("api/sales")
 public class SaleController {
 
-    private final SaleRepository saleRepository;
-    private final SaleConverter saleConverter;
     private final SaleService saleService;
 
-    public SaleController(SaleRepository saleRepository, SaleConverter saleConverter, SaleService saleService) {
-        this.saleRepository = saleRepository;
-        this.saleConverter = saleConverter;
+    public SaleController(SaleService saleService) {
         this.saleService = saleService;
     }
 
     @GetMapping("/list-paginated")
-    public Page<SaleRequestDto> getAllSales(Pageable pageable) {
-        return this.saleRepository.findAll(pageable).map(saleConverter::entityToRequestDTO);
+    public Page<SaleResponseDto> getAllSales(Pageable pageable) {
+        return saleService.getAllSales(pageable);
+    }
+
+    @GetMapping(params = {"uuid"})
+    public Page<SaleResponseDto> getSalesForUuid(Pageable pageable, @RequestParam UUID uuid) {
+        return saleService.getSalesForUuid(pageable, uuid);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public SaleResponseDto createSale(@Valid @RequestBody SaleRequestDto saleRequestDto) {
-        Sale sale = this.saleConverter.requestDTOToEntity(saleRequestDto);
-        Sale newSale = this.saleRepository.save(sale);
-        return this.saleConverter.entityToResponseDTO(newSale);
+        return saleService.createSale(saleRequestDto);
     }
 
     @DeleteMapping("/delete/{uuid}")
-    public void delete(@PathVariable UUID uuid) {
-        Sale sale = this.saleRepository.findByUuid(uuid).orElseThrow();
-        this.saleRepository.delete(sale);
+    public void deleteSale(@PathVariable UUID uuid) {
+        saleService.deleteSale(uuid);
     }
 }
