@@ -12,8 +12,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SaleRequestDto {
-    private User idUsuario;
-    private Customer idCustomer;
-    private Product idProduct;
-    private Campaign idCampaign;
+    private Long idUsuario;
+    private Long idCustomer;
+    private Long idProduct;
+    private Long idCampaign;
 }

@@ -7,13 +7,11 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = {"id"})
 
 public class Product {
     @Id
@@ -22,7 +20,7 @@ public class Product {
     private UUID uuid;
     private String name;
     private String description;
-    private BigDecimal value;
+    private BigDecimal price;
     private Integer amount;
 
 }
