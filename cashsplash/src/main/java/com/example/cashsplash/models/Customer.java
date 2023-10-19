@@ -20,6 +20,7 @@ public class Customer {
     private Long id;
     private UUID uuid;
     private String name;
+    @Column(unique = true)
     private String cpfCnpj;
     @Embedded
     private Address address;

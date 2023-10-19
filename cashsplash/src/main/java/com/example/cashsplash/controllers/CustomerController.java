@@ -1,70 +1,72 @@
 package com.example.cashsplash.controllers;
 
 import com.example.cashsplash.converters.CustomerConverter;
+import com.example.cashsplash.dtos.customer.CustomerResponseDTO;
+import com.example.cashsplash.dtos.user.UserResponseDTO;
 import com.example.cashsplash.models.Customer;
 import com.example.cashsplash.repositories.CustomerRepository;
 import com.example.cashsplash.dtos.customer.CustomerRequestDTO;
 import com.example.cashsplash.services.customer.CustomerService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/customers")
 public class CustomerController {
     private final CustomerRepository customerRepository;
     private final CustomerConverter customerConverter;
     private final CustomerService customerService;
 
-    public CustomerController(CustomerRepository customerRepository, CustomerConverter customerConverter, CustomerService customerService) {
-        this.customerRepository = customerRepository;
-        this.customerConverter = customerConverter;
-        this.customerService = customerService;
-    }
-
-
-    @GetMapping //GET "http://localhost:8080/customers/"
+    @GetMapping
     public List<Customer> getAllCustomers() {
         return this.customerRepository.findAll();
     }
 
-    @PostMapping //POST "http://localhost:8080/customers/"
-    public ResponseEntity<String> createCustomer(@RequestBody CustomerRequestDTO data) {
+    @PostMapping
+    public ResponseEntity<CustomerResponseDTO> createCustomer(@RequestBody CustomerRequestDTO data) {
         Customer customerEntity = this.customerConverter.requestDTOToEntity(data);
-        boolean created = this.customerService.saveCustomer(customerEntity);
-        if (!created) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro ao cadastrar cliente.");
+        Optional<Customer> savedCustomer = this.customerService.saveCustomer(customerEntity);
+
+        if (savedCustomer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Cliente cadastrado com sucesso!");
+        CustomerResponseDTO responseDTO = this.customerConverter.entityToResponseDTO(savedCustomer.get());
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @PutMapping("/{uuid}") //PUT "http://localhost:8080/customers/6a669eb6-fc41-49f0-b61b-9240ef34205f"
+    @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> updateCustomer(@PathVariable UUID uuid, @RequestBody @Valid CustomerRequestDTO data) {
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable UUID uuid, @RequestBody @Valid CustomerRequestDTO data) {
         Customer customerEntity = this.customerConverter.requestDTOToEntity(data);
-        boolean updated = customerService.updateCustomer(uuid, customerEntity);
-        if (!updated) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro ao atualizar usuário.");
+        Optional<Customer> updatedCustomer = customerService.updateCustomer(uuid, customerEntity);
+
+        if (updatedCustomer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuário atualizado com sucesso!");
+        CustomerResponseDTO responseDTO = this.customerConverter.entityToResponseDTO(updatedCustomer.get());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseDTO);
     }
 
-    @DeleteMapping("/{uuid}") //DELETE "http://localhost:8080/customers/6a669eb6-fc41-49f0-b61b-9240ef34205f"
+    @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<String> deleteCustomer(@PathVariable UUID uuid) {
+    public ResponseEntity<CustomerResponseDTO> deleteCustomer(@PathVariable UUID uuid) {
         boolean deleted = customerService.deleteCustomer(uuid);
         if (!deleted) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro ao excluir usuário.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário excluído com sucesso!");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
 

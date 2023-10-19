@@ -20,10 +20,10 @@ public class CustomerService {
         this.feignZipCode = feignZipCode;
     }
 
-    public boolean saveCustomer(Customer data) {
+    public Optional<Customer> saveCustomer(Customer data) {
         Optional<Customer> existingCustomer = customerRepository.findByUuid(data.getUuid());
         if (existingCustomer.isPresent()) {
-            return false;
+            return Optional.empty();
         }
 
         try {
@@ -40,14 +40,14 @@ public class CustomerService {
         }
 
         data.setUuid(UUID.randomUUID());
-        customerRepository.save(data);
-        return true;
+        Customer savedCustomer = customerRepository.save(data);
+        return Optional.of(savedCustomer);
     }
 
-    public boolean updateCustomer(UUID uuid, Customer data) {
+    public Optional<Customer> updateCustomer(UUID uuid, Customer data) {
         Optional<Customer> existingCustomer = customerRepository.findByUuid(uuid);
         if (existingCustomer.isEmpty()) {
-            return false;
+            return Optional.empty();
         }
 
         Customer customer = existingCustomer.get();
@@ -65,8 +65,8 @@ public class CustomerService {
         existingAddress.setLocalidade(newAddress.getLocalidade() != null ? newAddress.getLocalidade() : existingAddress.getLocalidade());
         existingAddress.setUf(newAddress.getUf() != null ? newAddress.getUf() : existingAddress.getUf());
 
-        this.customerRepository.save(customer);
-        return true;
+        Customer updatedCustomer = this.customerRepository.save(customer);
+        return Optional.of(updatedCustomer);
     }
 
     public boolean deleteCustomer(UUID uuid) {
