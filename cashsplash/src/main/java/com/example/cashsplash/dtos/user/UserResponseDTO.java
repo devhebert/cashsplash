@@ -2,12 +2,31 @@ package com.example.cashsplash.dtos.user;
 
 import com.example.cashsplash.enums.UserType;
 import com.example.cashsplash.models.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
-public record UserResponseDTO(Long id, UUID uuid, String name, String email, String password, UserType userType) {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserResponseDTO {
+    private Long id;
+    private UUID uuid;
+    private String name;
+    private String email;
+    private String password;
+    private UserType userType;
+
     public UserResponseDTO(User user) {
-        this(user.getId(), user.getUuid(), user.getName(), user.getEmail(), user.getPassword(), user.getUserType());
+        this.id = user.getId();
+        this.uuid = user.getUuid();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.userType = user.getUserType();
     }
 }
-

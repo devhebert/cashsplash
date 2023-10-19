@@ -15,25 +15,26 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean saveUser(User data) {
+    public Optional<User> saveUser(User data) {
         boolean isValidUser = validateUser(data);
 
-        if (!isValidUser) return false;
+        if (!isValidUser) return Optional.empty();
 
         Optional<User> existingUser = userRepository.findByEmail(data.getEmail());
         if (existingUser.isPresent()) {
-            return false;
+            return Optional.empty();
         }
 
         data.setUuid(UUID.randomUUID());
-        this.userRepository.save(data);
-        return true;
+        User savedUser = this.userRepository.save(data);
+        return Optional.of(savedUser);
     }
 
-    public boolean updateUser(UUID uuid, User data) {
+
+    public Optional<User> updateUser(UUID uuid, User data) {
         Optional<User> existingUser = userRepository.findByUuid(uuid);
         if (existingUser.isEmpty()) {
-            return false;
+            return Optional.empty();
         }
 
         User user = existingUser.get();
@@ -42,8 +43,8 @@ public class UserService {
         user.setPassword(data.getPassword() != null ? data.getPassword() : user.getPassword());
         user.setUserType(data.getUserType() != null ? data.getUserType() : user.getUserType());
 
-        this.userRepository.save(user);
-        return true;
+        User updatedUser = this.userRepository.save(user);
+        return Optional.of(updatedUser);
     }
 
     public boolean deleteUser(UUID uuid) {
