@@ -1,5 +1,6 @@
 package com.example.cashsplash.services.customer;
 
+import com.example.cashsplash.common.CrudService;
 import com.example.cashsplash.feign.FeignZipCode;
 import com.example.cashsplash.models.Address;
 import com.example.cashsplash.models.Customer;
@@ -7,11 +8,12 @@ import com.example.cashsplash.repositories.CustomerRepository;
 import com.example.cashsplash.dtos.viacep.ViaCepResponseDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class CustomerService {
+public class CustomerService implements CrudService<Customer> {
     private final CustomerRepository customerRepository;
     private final FeignZipCode feignZipCode;
 
@@ -20,15 +22,19 @@ public class CustomerService {
         this.feignZipCode = feignZipCode;
     }
 
-    public Optional<Customer> saveCustomer(Customer data) {
-        Optional<Customer> existingCustomer = customerRepository.findByUuid(data.getUuid());
+    public List<Customer> findAll() {
+        return this.customerRepository.findAll();
+    }
+
+    public Optional<Customer> save(Customer data) {
+        Optional<Customer> existingCustomer = this.customerRepository.findByCpfCnpj(data.getCpfCnpj());
         if (existingCustomer.isPresent()) {
             return Optional.empty();
         }
 
         try {
             if (data.getAddress() != null && data.getAddress().getCep() != null) {
-                ViaCepResponseDTO response = feignZipCode.fetchCep(data.getAddress().getCep());
+                ViaCepResponseDTO response = this.feignZipCode.fetchCep(data.getAddress().getCep());
                 data.getAddress().setLogradouro(response.logradouro());
                 data.getAddress().setComplemento(response.complemento());
                 data.getAddress().setBairro(response.bairro());
@@ -40,12 +46,16 @@ public class CustomerService {
         }
 
         data.setUuid(UUID.randomUUID());
-        Customer savedCustomer = customerRepository.save(data);
+        Customer savedCustomer = this.customerRepository.save(data);
         return Optional.of(savedCustomer);
     }
 
-    public Optional<Customer> updateCustomer(UUID uuid, Customer data) {
-        Optional<Customer> existingCustomer = customerRepository.findByUuid(uuid);
+    public Optional<Customer> findById(UUID uuid) {
+        return this.customerRepository.findByUuid(uuid);
+    }
+
+    public Optional<Customer> update(UUID uuid, Customer data) {
+        Optional<Customer> existingCustomer = this.findById(uuid);
         if (existingCustomer.isEmpty()) {
             return Optional.empty();
         }
@@ -69,14 +79,14 @@ public class CustomerService {
         return Optional.of(updatedCustomer);
     }
 
-    public boolean deleteCustomer(UUID uuid) {
-        Optional<Customer> existingUser = this.customerRepository.findByUuid(uuid);
+    public boolean delete(UUID uuid) {
+        Optional<Customer> existingUser = this.findById(uuid);
 
         if (existingUser.isEmpty()) {
             return false;
         }
 
-        customerRepository.delete(existingUser.get());
+        this.customerRepository.delete(existingUser.get());
         return true;
     }
 }

@@ -24,17 +24,16 @@ public class UserController {
     private final UserConverter userConverter;
     private final UserService userService;
 
-
     @GetMapping
     public List<User> getAllUsers() {
-        return this.userRepository.findAll();
+        return this.userService.findAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody @Valid UserRequestDTO data) {
         User userEntity = this.userConverter.requestDTOToEntity(data);
-        Optional<User> savedUser = this.userService.saveUser(userEntity);
+        Optional<User> savedUser = this.userService.save(userEntity);
 
         if (savedUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -48,7 +47,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable UUID uuid, @RequestBody @Valid UserRequestDTO data) {
         User userEntity = this.userConverter.requestDTOToEntity(data);
-        Optional<User> updatedUser = userService.updateUser(uuid, userEntity);
+        Optional<User> updatedUser = userService.update(uuid, userEntity);
 
         if (updatedUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -61,7 +60,7 @@ public class UserController {
     @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<UserResponseDTO> deleteUser(@PathVariable UUID uuid) {
-        boolean deleted = userService.deleteUser(uuid);
+        boolean deleted = userService.delete(uuid);
         if (!deleted) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }

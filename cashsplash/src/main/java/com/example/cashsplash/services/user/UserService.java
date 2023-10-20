@@ -1,26 +1,32 @@
 package com.example.cashsplash.services.user;
 
+import com.example.cashsplash.common.CrudService;
 import com.example.cashsplash.models.User;
 import com.example.cashsplash.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService {
+public class UserService implements CrudService<User> {
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> saveUser(User data) {
+    public List<User> findAll() {
+        return this.userRepository.findAll();
+    }
+
+    public Optional<User> save(User data) {
         boolean isValidUser = validateUser(data);
 
         if (!isValidUser) return Optional.empty();
 
-        Optional<User> existingUser = userRepository.findByEmail(data.getEmail());
+        Optional<User> existingUser = this.userRepository.findByEmail(data.getEmail());
         if (existingUser.isPresent()) {
             return Optional.empty();
         }
@@ -30,9 +36,12 @@ public class UserService {
         return Optional.of(savedUser);
     }
 
+    public Optional<User> findById(UUID uuid) {
+        return this.userRepository.findByUuid(uuid);
+    }
 
-    public Optional<User> updateUser(UUID uuid, User data) {
-        Optional<User> existingUser = userRepository.findByUuid(uuid);
+    public Optional<User> update(UUID uuid, User data) {
+        Optional<User> existingUser = this.findById(uuid);
         if (existingUser.isEmpty()) {
             return Optional.empty();
         }
@@ -47,14 +56,14 @@ public class UserService {
         return Optional.of(updatedUser);
     }
 
-    public boolean deleteUser(UUID uuid) {
-        Optional<User> existingUser = this.userRepository.findByUuid(uuid);
+    public boolean delete(UUID uuid) {
+        Optional<User> existingUser = this.findById(uuid);
 
         if (existingUser.isEmpty()) {
             return false;
         }
 
-        userRepository.delete(existingUser.get());
+        this.userRepository.delete(existingUser.get());
         return true;
     }
 
