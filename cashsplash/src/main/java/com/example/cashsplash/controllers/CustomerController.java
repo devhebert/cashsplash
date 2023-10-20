@@ -2,7 +2,6 @@ package com.example.cashsplash.controllers;
 
 import com.example.cashsplash.converters.CustomerConverter;
 import com.example.cashsplash.dtos.customer.CustomerResponseDTO;
-import com.example.cashsplash.dtos.user.UserResponseDTO;
 import com.example.cashsplash.models.Customer;
 import com.example.cashsplash.repositories.CustomerRepository;
 import com.example.cashsplash.dtos.customer.CustomerRequestDTO;
@@ -28,13 +27,13 @@ public class CustomerController {
 
     @GetMapping
     public List<Customer> getAllCustomers() {
-        return this.customerRepository.findAll();
+        return this.customerService.findAll();
     }
 
     @PostMapping
     public ResponseEntity<CustomerResponseDTO> createCustomer(@RequestBody CustomerRequestDTO data) {
         Customer customerEntity = this.customerConverter.requestDTOToEntity(data);
-        Optional<Customer> savedCustomer = this.customerService.saveCustomer(customerEntity);
+        Optional<Customer> savedCustomer = this.customerService.save(customerEntity);
 
         if (savedCustomer.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -48,7 +47,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable UUID uuid, @RequestBody @Valid CustomerRequestDTO data) {
         Customer customerEntity = this.customerConverter.requestDTOToEntity(data);
-        Optional<Customer> updatedCustomer = customerService.updateCustomer(uuid, customerEntity);
+        Optional<Customer> updatedCustomer = customerService.update(uuid, customerEntity);
 
         if (updatedCustomer.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -61,7 +60,7 @@ public class CustomerController {
     @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<CustomerResponseDTO> deleteCustomer(@PathVariable UUID uuid) {
-        boolean deleted = customerService.deleteCustomer(uuid);
+        boolean deleted = customerService.delete(uuid);
         if (!deleted) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
