@@ -3,6 +3,7 @@ package com.example.cashsplash.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 @Entity
 @NoArgsConstructor
@@ -19,18 +20,18 @@ public class Sale {
         @Column
         private UUID uuid;
         @ManyToOne
-        @JoinColumn(name = "id_user")
-        private User idUser;
+        @JoinColumn(name = "id_user", referencedColumnName = "id")
+        private User user;
+
+        @OneToOne
+        @JoinColumn(name = "id_customer", referencedColumnName = "id")
+        private Customer customer;
+
+        @OneToMany
+        @JoinColumn(name = "id_product", referencedColumnName = "id")
+        private List<Product> products;
 
         @ManyToOne
-        @JoinColumn(name = "id_customer")
-        private Customer idCustomer;
-
-        @ManyToOne
-        @JoinColumn(name = "id_product")
-        private Product idProduct;
-
-        @ManyToOne
-        @JoinColumn(name = "id_campaign")
-        private Campaign idCampaign;
+        @JoinColumn(name = "id_campaign", referencedColumnName = "id")
+        private Campaign campaign;
 }

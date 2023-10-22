@@ -4,6 +4,7 @@ import com.example.cashsplash.dtos.sale.SaleRequestDto;
 import com.example.cashsplash.dtos.sale.SaleResponseDto;
 import com.example.cashsplash.services.sale.SaleService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,14 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/sales")
+@RequiredArgsConstructor
+@RequestMapping("sales")
 public class SaleController {
-
     private final SaleService saleService;
-
-    public SaleController(SaleService saleService) {
-        this.saleService = saleService;
-    }
 
     @GetMapping("/list-paginated")
     public Page<SaleResponseDto> getAllSales(Pageable pageable) {

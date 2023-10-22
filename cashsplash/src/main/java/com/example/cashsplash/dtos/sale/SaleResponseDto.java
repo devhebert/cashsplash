@@ -1,12 +1,23 @@
 package com.example.cashsplash.dtos.sale;
 
 import com.example.cashsplash.models.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
-public record SaleResponseDto(Long id, UUID uuid, User idUsuario, Customer idCustomer, Campaign idCampaign) {
-
-    public SaleResponseDto(Sale sale) {
-        this(sale.getId(), sale.getUuid(), sale.getIdUser(), sale.getIdCustomer(), sale.getIdCampaign());
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class SaleResponseDto {
+    private Long id;
+    private UUID uuid;
+    private User user;
+    private Customer customer;
+    private Campaign campaign;
+    private List<Product> products;
 }

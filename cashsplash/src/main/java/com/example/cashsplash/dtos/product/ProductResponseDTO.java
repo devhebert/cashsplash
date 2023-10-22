@@ -1,13 +1,21 @@
 package com.example.cashsplash.dtos.product;
 
-
-import com.example.cashsplash.models.Product;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record ProductResponseDTO(UUID uuid, String name, String description, BigDecimal price, Integer amount) {
-    public ProductResponseDTO(Product product) {
-        this(product.getUuid(), product.getName(), product.getDescription(), product.getPrice(), product.getAmount());
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductResponseDTO {
+    private UUID uuid;
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private Integer amount;
 }

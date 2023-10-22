@@ -1,4 +1,4 @@
-package com.example.cashsplash.controllers;
+package com.example.cashsplash.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

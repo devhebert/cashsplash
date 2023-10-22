@@ -23,12 +23,12 @@ public class ProductConverter implements Converter<Product, ProductRequestDTO, P
         return this.modelMapper.map(response, Product.class);
     }
 
-    public ProductRequestDTO entityToRequestDTO(Product customer) {
-        return this.modelMapper.map(customer, ProductRequestDTO.class);
+    public ProductRequestDTO entityToRequestDTO(Product product) {
+        return this.modelMapper.map(product, ProductRequestDTO.class);
     }
 
-    public ProductResponseDTO entityToResponseDTO(Product customer) {
-        return this.modelMapper.map(customer, ProductResponseDTO.class);
+    public ProductResponseDTO entityToResponseDTO(Product product) {
+        return this.modelMapper.map(product, ProductResponseDTO.class);
     }
 }
 
