@@ -20,6 +20,6 @@ public class Campaign {
     private UUID uuid;
     private String name;
     private String description;
-    private BigDecimal offValue;
+    private Double offValue;
 
 }
