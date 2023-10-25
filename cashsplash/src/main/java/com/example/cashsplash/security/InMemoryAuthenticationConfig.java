@@ -24,6 +24,7 @@ public class InMemoryAuthenticationConfig {
                 .build());
         return manager;
     }
+
     @Bean
     public static BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
