@@ -1,6 +1,6 @@
 package com.example.cashsplash.controllers;
 
-import com.example.cashsplash.dtos.login.AuthRequest;
+import com.example.cashsplash.dtos.login.AuthRequestDTO;
 import com.example.cashsplash.models.User;
 import com.example.cashsplash.repositories.UserRepository;
 import com.example.cashsplash.services.login.JwtService;
@@ -24,11 +24,10 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping
-    public String login(@RequestBody AuthRequest request) {
+    public String login(@RequestBody AuthRequestDTO request) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(request.username(), request.password());
         this.authenticationManager.authenticate(authentication);
         User user = this.userRepository.findByUsername(request.username()).orElseThrow();
         return this.jwtService.createToken(user);
     }
-
 }
