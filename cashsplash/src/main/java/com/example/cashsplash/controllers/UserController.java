@@ -20,7 +20,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("users")
 public class UserController {
-    private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final UserService userService;
 
