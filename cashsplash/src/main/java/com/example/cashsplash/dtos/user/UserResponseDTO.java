@@ -1,6 +1,5 @@
 package com.example.cashsplash.dtos.user;
 
-import com.example.cashsplash.enums.UserType;
 import com.example.cashsplash.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,17 +15,15 @@ import java.util.UUID;
 public class UserResponseDTO {
     private Long id;
     private UUID uuid;
-    private String name;
+    private String username;
     private String email;
     private String password;
-    private UserType userType;
 
     public UserResponseDTO(User user) {
         this.id = user.getId();
         this.uuid = user.getUuid();
-        this.name = user.getName();
+        this.username = user.getUsername();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.userType = user.getUserType();
     }
 }

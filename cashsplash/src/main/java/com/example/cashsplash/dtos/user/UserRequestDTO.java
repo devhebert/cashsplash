@@ -1,6 +1,5 @@
 package com.example.cashsplash.dtos.user;
 
-import com.example.cashsplash.enums.UserType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,8 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserRequestDTO {
-    private String name;
+    private String username;
     private String email;
     private String password;
-    private UserType userType;
 }
