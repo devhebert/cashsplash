@@ -1,3 +1,3 @@
 package com.example.cashsplash.dtos.login;
 
-public record AuthRequest(String username, String password) {}
+public record AuthRequestDTO(String username, String password) {}
