@@ -1,6 +1,5 @@
 package com.example.cashsplash.dtos.customer;
 
-import com.example.cashsplash.enums.UserType;
 import com.example.cashsplash.models.Address;
 import lombok.Getter;
 import lombok.Setter;
