@@ -3,6 +3,7 @@ package com.example.cashsplash.services.user;
 import com.example.cashsplash.common.CrudService;
 import com.example.cashsplash.models.User;
 import com.example.cashsplash.repositories.UserRepository;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,10 +48,9 @@ public class UserService implements CrudService<User> {
         }
 
         User user = existingUser.get();
-        user.setName(data.getName() != null ? data.getName() : user.getName());
+        user.setUsername(data.getUsername() != null ? data.getUsername() : user.getUsername());
         user.setEmail(data.getEmail() != null ? data.getEmail() : user.getEmail());
         user.setPassword(data.getPassword() != null ? data.getPassword() : user.getPassword());
-        user.setUserType(data.getUserType() != null ? data.getUserType() : user.getUserType());
 
         User updatedUser = this.userRepository.save(user);
         return Optional.of(updatedUser);
@@ -70,9 +70,13 @@ public class UserService implements CrudService<User> {
     private boolean validateUser(User user) {
         if (user == null) return false;
 
-        return user.getName() != null && !user.getName().trim().isEmpty() &&
+        return user.getUsername() != null && !user.getUsername().trim().isEmpty() &&
                 user.getEmail() != null && !user.getEmail().trim().isEmpty() &&
-                user.getPassword() != null && !user.getPassword().trim().isEmpty() &&
-                user.getUserType() != null;
+                user.getPassword() != null && !user.getPassword().trim().isEmpty();
+    }
+
+    public User getByUsernameEntity(String username) {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new ExpressionException("Usuário não encontrado"));
     }
 }
