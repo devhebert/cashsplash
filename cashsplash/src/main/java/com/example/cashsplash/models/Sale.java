@@ -20,18 +20,18 @@ public class Sale {
         @Column
         private UUID uuid;
         @ManyToOne
-        @JoinColumn(name = "id_user", referencedColumnName = "id")
+        @JoinColumn(name = "user_Id")
         private User user;
 
         @OneToOne
-        @JoinColumn(name = "id_customer", referencedColumnName = "id")
+        @JoinColumn(name = "customer_id")
         private Customer customer;
 
         @OneToMany
-        @JoinColumn(name = "id_product", referencedColumnName = "id")
+        @JoinColumn(name = "product_id")
         private List<Product> products;
 
         @ManyToOne
-        @JoinColumn(name = "id_campaign", referencedColumnName = "id")
+        @JoinColumn(name = "campaign_id")
         private Campaign campaign;
 }

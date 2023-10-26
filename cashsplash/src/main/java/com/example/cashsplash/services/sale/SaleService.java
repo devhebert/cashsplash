@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SaleService {
     private final SaleRepository saleRepository;
@@ -34,7 +35,7 @@ public class SaleService {
         return saleRepository.findByUuid(pageable, uuid).map(saleConverter::entityToResponseDTO);
     }
 
-    @Transactional
+
     public SaleResponseDto createSale(SaleRequestDto saleRequestDto) {
         Long userId = saleRequestDto.getIdUser();
         Long customerId = saleRequestDto.getIdCustomer();
