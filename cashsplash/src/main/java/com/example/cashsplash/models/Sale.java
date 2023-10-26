@@ -3,10 +3,10 @@ package com.example.cashsplash.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -15,23 +15,24 @@ import java.util.UUID;
 public class Sale {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id")
         private Long id;
-        @Column
         private UUID uuid;
         @ManyToOne
-        @JoinColumn(name = "user_Id")
+        @JoinColumn(name = "user_id")
         private User user;
 
-        @OneToOne
+        @ManyToOne
         @JoinColumn(name = "customer_id")
         private Customer customer;
 
-        @OneToMany
-        @JoinColumn(name = "product_id")
-        private List<Product> products;
+        @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+        private List<SaleItem> items;
 
         @ManyToOne
         @JoinColumn(name = "campaign_id")
         private Campaign campaign;
+
+        public Sale() {
+                this.items = new ArrayList<>();
+        }
 }

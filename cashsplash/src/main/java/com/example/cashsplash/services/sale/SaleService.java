@@ -1,6 +1,7 @@
 package com.example.cashsplash.services.sale;
 
 import com.example.cashsplash.converters.SaleConverter;
+import com.example.cashsplash.dtos.ItemDto;
 import com.example.cashsplash.dtos.sale.SaleRequestDto;
 import com.example.cashsplash.dtos.sale.SaleResponseDto;
 import com.example.cashsplash.models.*;
@@ -39,7 +40,7 @@ public class SaleService {
     public SaleResponseDto createSale(SaleRequestDto saleRequestDto) {
         Long userId = saleRequestDto.getIdUser();
         Long customerId = saleRequestDto.getIdCustomer();
-        List<Long> productIds = saleRequestDto.getIdProducts();
+        List<ItemDto> itemsDto = saleRequestDto.getItems();
         Long campaignId = saleRequestDto.getIdCampaign();
 
         User user = userRepository.findById(userId)
@@ -47,20 +48,22 @@ public class SaleService {
 
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
-
-        List<Product> products = productRepository.findAllById(productIds);
-        if (products.isEmpty()) {
-            throw new EntityNotFoundException("Products not found");
+        Sale sale = new Sale();
+        if(itemsDto != null) {
+            itemsDto.forEach(itemDto -> {
+                var product = productRepository.findById(itemDto.getIdProduct())
+                        .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                SaleItem saleItem = new SaleItem(null, sale, product, itemDto.getAmount());
+                sale.getItems().add(saleItem);
+            });
         }
 
         Campaign campaign = campaignRepository.findById(campaignId)
                 .orElseThrow(() -> new EntityNotFoundException("Campaign not found"));
 
-        Sale sale = new Sale();
         sale.setUuid(UUID.randomUUID());
         sale.setUser(user);
         sale.setCustomer(customer);
-        sale.setProducts(products);
         sale.setCampaign(campaign);
 
         Sale newSale = saleRepository.save(sale);

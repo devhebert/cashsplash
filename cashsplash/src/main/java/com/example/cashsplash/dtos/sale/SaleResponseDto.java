@@ -1,5 +1,6 @@
 package com.example.cashsplash.dtos.sale;
 
+import com.example.cashsplash.dtos.ItemDto;
 import com.example.cashsplash.models.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +20,5 @@ public class SaleResponseDto {
     private User user;
     private Customer customer;
     private Campaign campaign;
-    private List<Product> products;
+    private List<ItemDto> items;
 }
