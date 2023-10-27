@@ -19,7 +19,9 @@ public class CampaignResponseDTO {
     private UUID uuid;
     private String name;
     private String description;
-    private Double offValue;
+    private BigDecimal offValue;
+
+    private boolean active;
 
     public CampaignResponseDTO(Campaign campaign) {
         this.id = campaign.getId();
@@ -27,5 +29,6 @@ public class CampaignResponseDTO {
         this.name = campaign.getName();
         this.description = campaign.getDescription();
         this.offValue = campaign.getOffValue();
+        this.active = campaign.isActive();
     }
 }

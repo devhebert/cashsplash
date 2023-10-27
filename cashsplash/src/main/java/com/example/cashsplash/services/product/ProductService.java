@@ -22,6 +22,10 @@ public class ProductService {
         return productRepository.findAll(pageable).map(productConverter::entityToResponseDTO);
     }
 
+    public Page<ProductResponseDTO> getProductForUuid(Pageable pageable, UUID uuid) {
+        return productRepository.findByUuid(pageable, uuid).map(productConverter::entityToResponseDTO);
+    }
+
     @Transactional
     public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO) {
         Product product = productConverter.requestDTOToEntity(productRequestDTO);

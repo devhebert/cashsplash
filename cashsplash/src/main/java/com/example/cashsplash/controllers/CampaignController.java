@@ -2,10 +2,8 @@ package com.example.cashsplash.controllers;
 
 import com.example.cashsplash.converters.CampaignConverter;
 import com.example.cashsplash.dtos.campanha.CampaignRequestDTO;
-import com.example.cashsplash.dtos.user.UserResponseDTO;
 import com.example.cashsplash.models.Campaign;
 
-import com.example.cashsplash.repositories.CampaignRepository;
 import com.example.cashsplash.services.campaign.CampaignService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,7 +14,6 @@ import org.modelmapper.ModelMapper;
 
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 

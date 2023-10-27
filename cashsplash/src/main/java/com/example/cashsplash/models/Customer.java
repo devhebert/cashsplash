@@ -1,6 +1,5 @@
 package com.example.cashsplash.models;
 
-import com.example.cashsplash.dtos.customer.CustomerRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -4,7 +4,6 @@ import com.example.cashsplash.models.Campaign;
 import com.example.cashsplash.repositories.CampaignRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -76,4 +75,15 @@ public class CampaignService {
                 campaign.getOffValue() != null;
     }
 
+
+    public Campaign getActiveCampaign() {
+
+        List<Campaign> allCampaigns = campaignRepository.findAll();
+
+        if (!allCampaigns.isEmpty()) {
+            return allCampaigns.get(0);
+        } else {
+            return null;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.cashsplash.controllers;
 
+import com.example.cashsplash.dtos.sale.SaleCalculationResultDto;
 import com.example.cashsplash.dtos.sale.SaleRequestDto;
 import com.example.cashsplash.dtos.sale.SaleResponseDto;
 import com.example.cashsplash.services.sale.SaleService;
@@ -34,7 +35,13 @@ public class SaleController {
         return saleService.createSale(saleRequestDto);
     }
 
+    @GetMapping("/{uuid}/calculate-totals")
+    public SaleCalculationResultDto calculateSaleTotals(@PathVariable UUID uuid) {
+        return saleService.calculateSaleTotals(uuid);
+    }
+
     @DeleteMapping("/delete/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSale(@PathVariable UUID uuid) {
         saleService.deleteSale(uuid);
     }

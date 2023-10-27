@@ -2,6 +2,7 @@ package com.example.cashsplash.services.sale;
 
 import com.example.cashsplash.converters.SaleConverter;
 import com.example.cashsplash.dtos.ItemDto;
+import com.example.cashsplash.dtos.sale.SaleCalculationResultDto;
 import com.example.cashsplash.dtos.sale.SaleRequestDto;
 import com.example.cashsplash.dtos.sale.SaleResponseDto;
 import com.example.cashsplash.models.*;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +28,8 @@ public class SaleService {
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
     private final CampaignRepository campaignRepository;
+
+    private final SaleCalculationService saleCalculationService;
 
 
     public Page<SaleResponseDto> getAllSales(Pageable pageable) {
@@ -69,6 +73,20 @@ public class SaleService {
         Sale newSale = saleRepository.save(sale);
 
         return saleConverter.entityToResponseDTO(newSale);
+    }
+
+    public SaleCalculationResultDto calculateSaleTotals(UUID saleUuid) {
+        Sale sale = saleRepository.findByUuid(saleUuid)
+                .orElseThrow(() -> new EntityNotFoundException("Sale not found"));
+
+        BigDecimal totalAmount = saleCalculationService.calculateTotalAmount(sale);
+        BigDecimal cashback = saleCalculationService.calculateCashback(sale);
+
+        SaleCalculationResultDto resultDto = new SaleCalculationResultDto();
+        resultDto.setTotalAmount(totalAmount);
+        resultDto.setCashback(cashback);
+
+        return resultDto;
     }
 
     public void deleteSale(UUID uuid) {

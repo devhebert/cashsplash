@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -20,6 +19,19 @@ public class Campaign {
     private UUID uuid;
     private String name;
     private String description;
-    private Double offValue;
+    private BigDecimal offValue;
+    private boolean active;
+
+    public Campaign() {
+        this.active = true;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
 }

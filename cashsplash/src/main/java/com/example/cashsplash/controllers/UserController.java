@@ -3,7 +3,6 @@ package com.example.cashsplash.controllers;
 import com.example.cashsplash.converters.UserConverter;
 import com.example.cashsplash.dtos.user.UserResponseDTO;
 import com.example.cashsplash.models.User;
-import com.example.cashsplash.repositories.UserRepository;
 import com.example.cashsplash.dtos.user.UserRequestDTO;
 import com.example.cashsplash.services.user.UserService;
 import jakarta.validation.Valid;

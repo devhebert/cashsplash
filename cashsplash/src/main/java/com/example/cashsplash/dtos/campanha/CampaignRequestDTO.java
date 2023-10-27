@@ -12,5 +12,5 @@ import java.math.BigDecimal;
 public class CampaignRequestDTO {
     String name;
     String description;
-    Double offValue;
+    BigDecimal offValue;
 }

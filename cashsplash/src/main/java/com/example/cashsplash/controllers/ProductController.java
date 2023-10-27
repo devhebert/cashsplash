@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("products")
@@ -17,6 +19,11 @@ public class ProductController {
 
     @GetMapping("/list-paginated")
     public Page<ProductResponseDTO> getAllProducts(Pageable pageable) {return productService.getAllProducts(pageable);}
+
+    @GetMapping(params = {"uuid"})
+    public Page<ProductResponseDTO> getProductForUuid(Pageable pageable, @RequestParam UUID uuid) {
+        return productService.getProductForUuid(pageable, uuid);
+    }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
