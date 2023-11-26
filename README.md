@@ -3,9 +3,10 @@ Projeto de cash back
 
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" width="40" height="40"/>
 
-<h4>Professor</h4>
+<h4>Professores</h4>
 <ul>
   <li>Jesse Haniel</li>
+  <li>Cinthia Queiroz</li>
 </ul>
 
 <h4>Turma 1000</h4>
