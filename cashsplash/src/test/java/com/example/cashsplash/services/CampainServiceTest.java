@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import static org.mockito.Mockito.*;
 
@@ -31,7 +32,7 @@ public class CampainServiceTest {
         campaign.setId(campaignId);
         campaign.setName("Black-Frauday");
         campaign.setDescription("Mês do golpe");
-        campaign.setOffValue(100.0);
+        campaign.setOffValue(BigDecimal.valueOf(100.0));
 
         when(campaignRepository.save(campaign)).thenReturn(campaign);
 
@@ -56,7 +57,7 @@ public class CampainServiceTest {
         Campaign invalidCampaign = new Campaign();
         invalidCampaign.setName("");
         invalidCampaign.setDescription("test@example.com");
-        invalidCampaign.setOffValue(100.0);
+        invalidCampaign.setOffValue(BigDecimal.valueOf(100.0));
 
         Optional<Campaign> savedCampaign = campaignService.saveCampaign(invalidCampaign);
         Assertions.assertTrue(savedCampaign.isEmpty());
